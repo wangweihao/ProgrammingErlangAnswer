@@ -7,8 +7,6 @@
 
 term_to_packet(Term) ->
     Bin = term_to_binary(Term),
-    <<Head:4/bits, _/bits>> = Bin,
-    <<Size:4>> = Head,
-    <<Head:4/bits, Info:Size/bits>> = Bin,
-    Info.
-
+    Length = bit_size(Bin),
+    Size = <<Length:1/unit:32>>,
+    <<Size/binary, Bin/binary>>.
